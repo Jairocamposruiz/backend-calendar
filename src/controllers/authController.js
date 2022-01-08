@@ -10,9 +10,12 @@ const createUser = async (req, res, next) => {
     if ( await emailAlreadyExists(email) ) throw boom.badRequest('The email already exists');
     const newUser = await createNewUser(req.body);
 
+    const token = await generateJwt({ name: newUser.name, id: newUser.id });
+
     res.status(201).json({
       ok: true,
       msg: 'New User was created',
+      token,
       user: newUser,
     });
   } catch ( error ) {
@@ -48,7 +51,11 @@ const renewToken = async (req, res, next) => {
     res.json({
       ok: true,
       msg: 'The token was successfully renewed',
-      token: newToken
+      token: newToken,
+      user: {
+        name,
+        id
+      }
     });
   } catch ( error ) {
     next(error);

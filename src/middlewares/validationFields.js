@@ -1,6 +1,5 @@
-const { validationResult, body, param, check } = require('express-validator');
+const { validationResult, body, check } = require('express-validator');
 const moment = require('moment');
-const mongoose = require('mongoose');
 
 const validationFields = (req, res, next) => {
   const errors = validationResult(req);
